@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Nuage Blanc</title>
+<meta name="description" content="Galerie d'illustrations de Nuage Blanc, avec crédit des artistes.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Portfolio — Nuage Blanc">
+<meta property="og:description" content="Galerie d'illustrations de Nuage Blanc, avec crédit des artistes.">
+<meta property="og:image" content="https://araxiaa.github.io/nuage-blanc/assets/avatar.png">
+<meta property="og:url" content="https://araxiaa.github.io/nuage-blanc/portfolio.html">
+<meta property="og:locale" content="fr_FR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Portfolio — Nuage Blanc">
+<meta name="twitter:description" content="Galerie d'illustrations de Nuage Blanc, avec crédit des artistes.">
+<meta name="twitter:image" content="https://araxiaa.github.io/nuage-blanc/assets/avatar.png">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="ciel-de-fond" aria-hidden="true">
+    <div class="nuage-flottant" style="top:8%;left:-10%;width:38vw;animation-duration:70s;">
+      <svg viewBox="0 0 200 100" fill="#ffffff"><ellipse cx="60" cy="60" rx="55" ry="30"/><ellipse cx="110" cy="45" rx="45" ry="35"/><ellipse cx="150" cy="65" rx="40" ry="25"/></svg>
+    </div>
+    <div class="nuage-flottant" style="top:34%;right:-12%;width:30vw;animation-duration:55s;animation-direction:alternate-reverse;">
+      <svg viewBox="0 0 200 100" fill="#dceaf2"><ellipse cx="60" cy="60" rx="50" ry="28"/><ellipse cx="115" cy="50" rx="42" ry="30"/></svg>
+    </div>
+    <div class="nuage-flottant" style="top:64%;left:-8%;width:34vw;animation-duration:80s;">
+      <svg viewBox="0 0 200 100" fill="#9fe0f2"><ellipse cx="70" cy="55" rx="52" ry="26"/><ellipse cx="120" cy="45" rx="40" ry="28"/></svg>
+    </div>
+    <div class="nuage-flottant" style="top:85%;right:-10%;width:26vw;animation-duration:60s;animation-direction:alternate-reverse;">
+      <svg viewBox="0 0 200 100" fill="#ffffff"><ellipse cx="60" cy="60" rx="45" ry="24"/><ellipse cx="105" cy="48" rx="36" ry="26"/></svg>
+    </div>
+  </div>
+
+
+  <nav class="nav">
+    <a href="index.html" class="nav-identite">
+      <img src="assets/avatar.png" alt="Portrait de Nuage Blanc" class="nav-avatar">
+      <span class="nav-noms"><span>Nuage Blanc</span><span>Nubes</span></span>
+    </a>
+    <button class="nav-burger" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    <div class="nav-liens">
+      <a href="index.html">Accueil</a>
+<a href="personnalite.html">Personnalité</a>
+<a href="physique.html">Physique</a>
+<a href="relations.html">Relations</a>
+<a href="histoire.html">Histoire</a>
+<a href="portfolio.html" class="actif">Portfolio</a>
+
+    </div>
+  </nav>
+
+<nav class="fil-ariane" aria-label="Fil d'ariane">
+  <a href="index.html">Accueil</a><span class="separateur">/</span><span aria-current="page">Portfolio</span>
+</nav>
+
+<div class="page">
+
+  <section class="zone-jour">
+    <div class="panneau">
+      <span class="eyebrow">Portfolio</span>
+      <h1>Illustrations de Nuage Blanc</h1>
+      <p>Une galerie vouée à s'agrandir au fil des dessins, avec tout le crédit dû à chaque artiste.</p>
+    </div>
+  </section>
+
+  <section class="zone-crepuscule">
+    <div class="panneau">
+      <span class="zone-label">Galerie</span>
+      <div class="grille-portfolio">
+        <figure class="oeuvre">
+          <div class="cadre-image">
+            <img src="assets/nuage_blanc.png" alt="Nuage Blanc assis, félin blanc aux yeux bleu foncé, illustration officielle">
+          </div>
+          <figcaption>Portrait officiel &middot; par Araxia</figcaption>
+        </figure>
+        <figure class="oeuvre">
+          <div class="cadre-image">
+            <img src="assets/Nubes - 2.png" alt="Nubes Fulldbody">
+          </div>
+          <figcaption>Titre ou contexte &middot; par Araxia</figcaption>
+        </figure>
+        <figure class="oeuvre">
+          <div class="cadre-image">
+            <img src="assets/Nubes - Sprite.png" alt="Nuage Blanc - ClanGen">
+          </div>
+          <figcaption>Titre ou contexte &middot; par ClanGen</figcaption>
+        </figure>
+        <div class="oeuvre-vide">Une nouvelle illustration<br>viendra bientôt se poser ici</div>
+        <div class="oeuvre-vide">Une nouvelle illustration<br>viendra bientôt se poser ici</div>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    ➕ POUR AJOUTER UNE NOUVELLE ILLUSTRATION :
+    1. Dépose le fichier image dans le dossier /assets
+    2. Copie ce bloc à la place d'un <div class="oeuvre-vide">...</div>
+
+    <figure class="oeuvre">
+      <div class="cadre-image">
+        <img src="assets/NOM_DU_FICHIER.png" alt="Description courte de l'illustration">
+      </div>
+      <figcaption>Titre ou contexte &middot; par NomDeL'Artiste</figcaption>
+    </figure>
+  -->
+
+</div>
+
+
+  <footer class="pied">
+    <p>Nuage Blanc, autrefois Nubes &middot; Apprenti du Clan du Vent<br>
+    Fiche &amp; site créés par Araxia pour <a href="#">Le Prix de la Trêve</a></p>
+  </footer>
+
+<script src="script.js"></script>
+</body>
+</html>
