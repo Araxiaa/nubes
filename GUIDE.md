@@ -52,31 +52,38 @@ Paragraphe · Intertitre · Citation · Encart « À retenir » · Image · Sép
 
 ## Navigation du site
 
-Barre du haut (en bas sur téléphone) : **Accueil · Lui · Histoire · Entourage · Jouer · Galerie**.
+Sur ordinateur, les rubriques sont dans la barre du haut : **Accueil · Lui · Histoire · Entourage · Jouer · Galerie**.
+Sur téléphone (et tablette), le bouton **Menu** ouvre un grand menu plein écran avec toutes les pages et leurs sous-pages.
 - Lui : Identité, Caractère, Physique, Voix, Aptitudes, Santé
 - Histoire : Chroniques, Parcours (frise de toute sa vie, assemblée toute seule), Fils RP
-- Entourage : Lignée, Relations (liste ou **Toile**)
-- Jouer : *Jouer avec lui* (guide pour les partenaires de RP) et **Fiche express** (résumé généré automatiquement,
-  bouton « Copier » prêt pour Discord, ou « Imprimer / PDF »)
+- Entourage : Lignée, Relations (liste ou **Ciel**)
+- Jouer : *Jouer avec lui* (guide pour les partenaires de RP)
+
+**Le Ciel** (Entourage → Relations → « Ciel ») : il est le grand nuage du centre, chaque relation est un nuage qui
+flotte autour de lui. Plus le lien est fort, plus le nuage est proche et gros ; sa teinte dit la nature du lien
+(clair : apprécié, bleuté : neutre, orageux : aversion, pâle : décédé). Un clic ouvre l'évolution de la relation.
 
 Pour retrouver quelque chose en un clin d'œil : la **loupe** de l'en-tête, ou la touche **/** (ou Ctrl+K),
 cherche dans les pages, chapitres, fils, relations et la lignée.
 Chaque page finit par « Précédent / Suivant ». Adresses directes : `#lui/caractere`, `#histoire/fils`…
 Les anciennes adresses (`personnalite.html`, `relations.html`…) redirigent vers les nouvelles pages.
 
-Le bouton ☁ de l'en-tête bascule entre le thème **Nuit** et le thème **Brume** (jour, doux : Nuage Blanc
+Le bouton nuage de l'en-tête bascule entre le thème **Nuit** et le thème **Brume** (jour, doux : Nuage Blanc
 ne supporte pas la lumière vive, son œil se plisse d'ailleurs en mode Brume). Le choix est mémorisé.
 
-## Ambiance
+## Direction artistique
 
-Flocons et rafales de vent, nuages qui dérivent, portrait qui flotte et suit le pointeur, œil du logo qui suit
-le curseur et cligne. Tout se coupe tout seul si l'appareil demande moins d'animations ou si l'onglet est masqué.
+Propre à Nuage Blanc, volontairement différente des autres sites : mise en page éditoriale (grands titres en
+*Instrument Serif*, texte en *Jost*, filets fins, pas de cartes arrondies), le chat de neige assis devant une
+lune, des bancs de nuages qui dérivent derrière lui, un halo de lune qui suit le curseur, des flocons et des
+rafales de vent, un œil de logo qui suit le curseur et cligne. Tout se coupe tout seul si l'appareil demande
+moins d'animations ou si l'onglet est masqué.
 
 ## Où modifier quoi
 
 | Je veux changer…                       | Fichier                                      |
 |----------------------------------------|----------------------------------------------|
-| Couleurs, polices                      | `css/site.css` (variables en haut)           |
+| Couleurs, polices                      | `css/site.css` (variables en haut ; polices dans `assets/fonts/`) |
 | Formulaires du dashboard               | `js/admin.js` (liste `RUBRIQUES`)            |
 | Affichage d'une page                   | `js/site.js` (une fonction par page)         |
 | Flocons                                | `js/ambiance.js`                             |

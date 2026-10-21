@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Nuage Blanc — Clan du Vent</title>
     <meta name="description" content="Fiche de personnage de Nuage Blanc (Nubes), ancien solitaire devenu apprenti du Clan du Vent : caractère, physique, histoire, relations, fils de jeu de rôle et guide pour jouer avec lui.">
-    <meta name="theme-color" content="#0a1220">
+    <meta name="theme-color" content="#080e1c">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Nuage Blanc — Clan du Vent">
     <meta property="og:description" content="Seul, il a survécu. Parmi les siens, il apprend à vivre.">
@@ -14,18 +14,18 @@
     <meta property="og:locale" content="fr_FR">
     <meta name="twitter:card" content="summary">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="preload" href="assets/fonts/cormorant.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/instrument.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
     <script>
         /* Thème (nuit par défaut) appliqué avant l'affichage : aucun clignotement */
         (function () {
             var t = null;
             try { t = localStorage.getItem('nubes-theme'); } catch (e) {}
             document.documentElement.setAttribute('data-theme', t === 'brume' ? 'brume' : 'nuit');
-            if (t === 'brume') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#eef3f8');
+            if (t === 'brume') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#e9eff6');
         })();
     </script>
-    <link rel="stylesheet" href="css/site.css?v=mviar19h">
+    <link rel="stylesheet" href="css/site.css?v=mvibqsr5">
 </head>
 <body>
     <a class="evitement" href="#principal">Aller au contenu</a>
@@ -37,14 +37,10 @@
                 <g class="pupille"><ellipse cx="24" cy="16" rx="4.6" ry="10.5"/></g>
                 <path class="paupiere" d="M2 16C9 6 17 3 24 3s15 3 22 13C39 8 31 6 24 6S9 8 2 16z"/>
             </symbol>
-            <symbol id="patte" viewBox="0 0 48 48">
-                <g fill="currentColor"><ellipse cx="12" cy="20" rx="4.6" ry="6" transform="rotate(-18 12 20)"/><ellipse cx="20.500" cy="11.500" rx="4.600" ry="6.200"/><ellipse cx="29.500" cy="11.500" rx="4.600" ry="6.200"/><ellipse cx="38" cy="20" rx="4.600" ry="6" transform="rotate(18 38 20)"/>
-                <path d="M25 24c-6 0-11 5.500-11 10.500 0 4 3 6 6 6 2 0 3.400-1 5-1s3 1 5 1c3 0 6-2 6-6C36 29.500 31 24 25 24z"/></g>
-            </symbol>
         </defs>
     </svg>
 
-    <div class="ciel" aria-hidden="true"><i class="nuage n1"></i><i class="nuage n2"></i><i class="nuage n3"></i></div>
+    <div class="ciel" id="ciel" aria-hidden="true"><i class="nuage n1"></i><i class="nuage n2"></i><i class="nuage n3"></i></div>
     <canvas id="flocons" aria-hidden="true"></canvas>
 
     <header class="haut">
@@ -55,15 +51,20 @@
         <nav class="menu" id="menu" aria-label="Navigation principale"></nav>
         <div class="outils">
             <button type="button" class="outil" id="chercher" aria-label="Rechercher dans le site (touche /)" title="Rechercher ( / )">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.500 15.500L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500" fill="none" stroke="currentColor" stroke-width="1.600"/><path d="M15.500 15.500L21 21" stroke="currentColor" stroke-width="1.600" stroke-linecap="round"/></svg>
             </button>
             <button type="button" class="outil theme" id="theme" aria-label="Basculer entre le thème nuit et le thème brume" title="Nuit / Brume">
                 <svg viewBox="0 0 24 24" aria-hidden="true" class="i-lune"><path d="M21 14.500A9 9 0 0 1 9.500 3a9 9 0 1 0 11.500 11.500z"/></svg>
                 <svg viewBox="0 0 24 24" aria-hidden="true" class="i-soleil"><path d="M7 18a5 5 0 1 1 1.500-9.800A6 6 0 0 1 20 11a3.500 3.500 0 0 1-.500 7z"/></svg>
             </button>
+            <button type="button" class="bouton-menu" id="burger" aria-expanded="false" aria-controls="volet"><span>Menu</span><i aria-hidden="true"></i></button>
         </div>
     </header>
     <nav class="sous" id="sous" aria-label="Sous-pages" hidden></nav>
+
+    <div class="volet" id="volet" hidden>
+        <nav id="volet-nav" aria-label="Toutes les pages"></nav>
+    </div>
 
     <main class="principal" id="principal" tabindex="-1">
         <div id="vue"><p class="chargement">Nuage Blanc ouvre un œil…</p></div>
@@ -79,7 +80,6 @@
         </footer>
     </main>
 
-    <nav class="bas" id="bas" aria-label="Navigation principale"></nav>
     <button type="button" class="remonter" id="remonter" aria-label="Remonter en haut de la page">↑</button>
 
     <dialog id="visionneuse" aria-label="Illustration">
@@ -102,11 +102,11 @@
         </div>
     </dialog>
 
-    <script src="js/outils.js?v=mviar19h"></script>
-    <script src="js/data/contenu.js?v=mviar19h"></script>
-    <script src="js/config.js?v=mviar19h"></script>
-    <script src="js/donnees.js?v=mviar19h"></script>
-    <script src="js/site.js?v=mviar19h"></script>
-    <script src="js/ambiance.js?v=mviar19h" defer></script>
+    <script src="js/outils.js?v=mvibqsr5"></script>
+    <script src="js/data/contenu.js?v=mvibqsr5"></script>
+    <script src="js/config.js?v=mvibqsr5"></script>
+    <script src="js/donnees.js?v=mvibqsr5"></script>
+    <script src="js/site.js?v=mvibqsr5"></script>
+    <script src="js/ambiance.js?v=mvibqsr5" defer></script>
 </body>
 </html>

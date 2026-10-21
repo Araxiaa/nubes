@@ -55,7 +55,7 @@
             champs: [
                 { k: 'clan', t: 'text', l: 'Clan' },
                 { k: 'devise', t: 'text', l: 'Devise (sous le nom)' },
-                { k: 'accroche', t: 'area', l: 'Phrase d\'accroche (accueil et fiche express)' },
+                { k: 'accroche', t: 'area', l: 'Phrase d\'accroche (accueil)' },
                 { k: 'portrait', t: 'image', l: 'Portrait de l\'accueil', aide: 'Idéalement un gros plan, fond transparent (il est affiché dans un disque de lune)' },
                 { k: 'pv', t: 'text', l: 'Points de vie (PV)', aide: 'Ex. 50' },
                 { k: 'pa', t: 'text', l: 'Points d\'attaque (PA)', aide: 'Ex. 5' },

@@ -11,16 +11,15 @@
 
     /* ---------- Menu ---------- */
     var PAGES = [
-        { id: 'accueil', nom: 'Accueil', icone: 'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z', subs: [['accueil', 'Accueil']] },
-        { id: 'lui', nom: 'Lui', icone: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-3.300 0-8 1.700-8 5v2h16v-2c0-3.300-4.700-5-8-5z',
+        { id: 'accueil', nom: 'Accueil', desc: 'Qui est Nuage Blanc, en un regard.', subs: [['accueil', 'Accueil']] },
+        { id: 'lui', nom: 'Lui', desc: 'Identité, caractère, physique, voix, aptitudes, santé.',
           subs: [['noms', 'Identité'], ['caractere', 'Caractère'], ['physique', 'Physique'], ['voix', 'Voix'], ['aptitudes', 'Aptitudes'], ['sante', 'Santé']] },
-        { id: 'histoire', nom: 'Histoire', icone: 'M5 3h11a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3zm3 4v2h8V7zm0 4v2h8v-2z',
+        { id: 'histoire', nom: 'Histoire', desc: 'Ses chapitres, la frise de sa vie, ses fils de rôle-play.',
           subs: [['chroniques', 'Chroniques'], ['parcours', 'Parcours'], ['fils', 'Fils RP']] },
-        { id: 'entourage', nom: 'Entourage', icone: 'M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 13c-2.700 0-6 1.300-6 3.500V19h12v-2.500c0-2.200-3.300-3.500-6-3.500zm8 0c-.5 0-1 0-1.500.1 1.600.9 2.500 2.100 2.500 3.400V19h6v-2.500c0-2.200-3.300-3.500-7-3.500z',
+        { id: 'entourage', nom: 'Entourage', desc: 'Sa famille et le ciel de ses relations.',
           subs: [['lignee', 'Lignée'], ['relations', 'Relations']] },
-        { id: 'jouer', nom: 'Jouer', icone: 'M5 3h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
-          subs: [['accroches', 'Jouer avec lui'], ['express', 'Fiche express']] },
-        { id: 'galerie', nom: 'Galerie', icone: 'M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm2 12h12l-3.500-5-3 4-2-2.500z', subs: [['galerie', 'Galerie']] }
+        { id: 'jouer', nom: 'Jouer', desc: 'Comment l\'aborder et écrire avec lui.', subs: [['accroches', 'Jouer avec lui']] },
+        { id: 'galerie', nom: 'Galerie', desc: 'Illustrations, sprites et designs.', subs: [['galerie', 'Galerie']] }
     ];
     var ORDRE = [];
     PAGES.forEach(function (p) { p.subs.forEach(function (s) { ORDRE.push(p.id + '/' + s[0]); }); });
@@ -30,8 +29,9 @@
     }
 
     /* ---------- Petits gabarits ---------- */
+    var RUB = '';
     function titre(h, sous) {
-        return '<header class="entete"><h1>' + esc(h) + '</h1>' + (sous ? '<p>' + esc(sous) + '</p>' : '') + '</header>';
+        return '<header class="entete">' + (RUB ? '<span class="rubrique">' + esc(RUB) + '</span>' : '') + '<h1>' + esc(h) + '</h1>' + (sous ? '<p>' + esc(sous) + '</p>' : '') + '</header>';
     }
     // Blocs de texte : paragraphe (par défaut), intertitre, citation, encart, séparateur, image
     function paras(liste) {
@@ -103,48 +103,49 @@
         var fils = (c.fils || []).filter(function (x) { return x.enCours; });
         var enCours = (c.sante || []).filter(function (x) { return x.statut === 'en_cours'; });
         var evol = evolutions(c).slice(0, 3);
+        var mots = String(na.nom).split(' ');
+        var art = (c.apparence && c.apparence.image) || f.portrait;
 
         var hero = '<section class="hero">' +
+            '<div class="hero-lune" aria-hidden="true"></div>' +
+            '<div class="hero-art">' + (art ? '<img src="' + O.url(art) + '" alt="' + esc(na.nom) + ', félin blanc aux yeux bleu foncé" width="1600" height="960" fetchpriority="high" decoding="async">' : '') + '</div>' +
             '<div class="hero-texte"><p class="surtitre">' + esc(f.clan || '') + '</p>' +
-            '<h1>' + esc(na.nom) + '</h1>' +
+            '<h1>' + mots.map(function (m, i) { return '<span style="--i:' + i + '">' + esc(m) + '</span>'; }).join(' ') + '</h1>' +
             (ne ? '<p class="alias">Autrefois connu sous le nom de <b>' + esc(ne) + '</b></p>' : '') +
             '<p class="devise">' + esc(f.devise || '') + '</p>' +
             (f.accroche ? '<p class="accroche">' + esc(f.accroche) + '</p>' : '') +
-            '<ul class="chips">' + (f.lignes || []).map(function (l) { return '<li><span>' + esc(l.label) + '</span>' + esc(l.valeur) + '</li>'; }).join('') + '</ul>' +
-            '<div class="jauges"><div><span>Points de vie</span><b>' + esc(f.pv || '') + '</b></div><div><span>Points d\'attaque</span><b>' + esc(f.pa || '') + '</b></div></div>' +
-            '<div class="actions"><a class="btn" href="#histoire/chroniques">Découvrir son histoire</a><a class="btn clair" href="#jouer/accroches">Jouer avec lui</a></div></div>' +
-            '<div class="hero-image"><div class="lune" aria-hidden="true"></div>' +
-            '<div class="cadre">' + (f.portrait ? '<img src="' + O.miniature(f.portrait) + '" alt="Portrait de ' + esc(na.nom) + ', félin blanc aux yeux bleu foncé" width="640" height="640" fetchpriority="high" decoding="async">' : '') + '</div>' +
-            '<i class="nuagette a" aria-hidden="true"></i><i class="nuagette b" aria-hidden="true"></i></div></section>';
+            '<div class="actions"><a class="btn" href="#histoire/chroniques">Découvrir son histoire</a><a class="btn clair" href="#jouer">Jouer avec lui</a></div></div>' +
+            '<div class="banc banc-1" aria-hidden="true"></div><div class="banc banc-2" aria-hidden="true"></div></section>' +
+            '<dl class="fiche">' + (f.lignes || []).map(function (l) { return '<div><dt>' + esc(l.label) + '</dt><dd>' + esc(l.valeur) + '</dd></div>'; }).join('') +
+            ((f.pv || f.pa) ? '<div class="stat"><dt>Points de vie</dt><dd>' + esc(f.pv || '—') + '</dd></div><div class="stat"><dt>Points d\'attaque</dt><dd>' + esc(f.pa || '—') + '</dd></div>' : '') + '</dl>';
 
         var cartes = '<section class="maintenant"><h2 class="titre-section">En ce moment</h2><div class="trio">' +
             '<article class="mini"><h3>Fils en cours</h3>' +
             (fils.length ? '<ul>' + fils.slice(0, 3).map(function (x) { return '<li><b>' + esc(x.titre) + '</b><small>' + esc(O.lune(x.lune)) + '</small></li>'; }).join('') + '</ul>' : '<p>Aucun fil en cours.</p>') +
             '<a href="#histoire/fils">Tous les fils →</a></article>' +
             '<article class="mini"><h3>Disponibilité RP</h3><p class="dispo ' + esc(j.statut || 'ouvert') + '">' + esc(STATUTS_RP[j.statut || 'ouvert']) + '</p>' +
-            (j.statutTexte ? '<p>' + esc(j.statutTexte) + '</p>' : '') + '<a href="#jouer/accroches">Comment jouer avec lui →</a></article>' +
+            (j.statutTexte ? '<p>' + esc(j.statutTexte) + '</p>' : '') + '<a href="#jouer">Comment jouer avec lui →</a></article>' +
             '<article class="mini"><h3>Santé</h3>' +
             (enCours.length ? '<ul>' + enCours.slice(0, 3).map(function (x) { return '<li><b>' + esc(x.titre) + '</b><small>' + (x.type === 'maladie' ? 'Maladie' : 'Blessure') + '</small></li>'; }).join('') + '</ul>'
                 : '<p class="bon">Rien en cours. Handicap permanent : héméralopie.</p>') +
             '<a href="#lui/sante">Historique →</a></article>' +
             '<article class="mini"><h3>Relations</h3>' +
             (evol.length ? '<ul>' + evol.map(function (e) { return '<li><b>' + esc(e.rel.nom) + '</b>' + O.coeursAvis(e.avis, e.rel) + '</li>'; }).join('') + '</ul>' : '<p>Aucune relation notée.</p>') +
-            '<a href="#entourage/relations">Toutes les relations →</a></article></div></section>';
+            '<a href="#entourage/relations">Le ciel de ses relations →</a></article></div></section>';
 
-        var debut = '<section><h2 class="titre-section">Par où commencer ?</h2><div class="debut">' +
-            lien('jouer/express', 'Le connaître en 2 minutes', 'Sa fiche express : l\'essentiel, prêt à copier sur Discord.', 'un') +
-            lien('histoire/chroniques', 'Lire son histoire', 'Huit chapitres, de sa naissance à son arrivée au Clan du Vent.', 'deux') +
-            lien('jouer/accroches', 'Écrire avec lui', 'Comment l\'aborder, ce qu\'il accepte, idées de rencontres.', 'trois') + '</div></section>';
+        var debut = '<section><h2 class="titre-section">Par où commencer ?</h2><ol class="debut">' +
+            lien('lui/caractere', 'Comprendre son caractère', 'Un protecteur qui se cache derrière un rempart de sarcasmes.') +
+            lien('histoire/chroniques', 'Lire son histoire', 'Huit chapitres, de sa naissance à son arrivée au Clan du Vent.') +
+            lien('jouer', 'Écrire avec lui', 'Comment l\'aborder, ce qu\'il accepte, idées de rencontres.') + '</ol></section>';
 
-        var explorer = '<section><h2 class="titre-section">Tout explorer</h2><div class="explorer">' +
-            lien('lui/noms', 'Lui', 'Identité, caractère, physique, voix, aptitudes et santé.') +
-            lien('histoire/parcours', 'Parcours', 'Toute sa vie en une frise, lune après lune.') +
-            lien('entourage/lignee', 'Entourage', 'Sa famille, ses relations et leur évolution.') +
-            lien('galerie/galerie', 'Galerie', 'Illustrations, sprites et designs.') + '</div></section>';
+        var explorer = '<section><h2 class="titre-section">Tout explorer</h2><ul class="explorer">' + PAGES.slice(1).map(function (p) {
+            return '<li>' + lienLigne(p.id + (p.subs.length > 1 ? '/' + p.subs[0][0] : ''), p.nom, p.desc) + '</li>';
+        }).join('') + '</ul></section>';
 
         return hero + cartes + debut + explorer;
     }
-    function lien(route, nom, texte, cls) { return '<a class="carte-lien' + (cls ? ' ' + cls : '') + '" href="#' + route + '"><h3>' + nom + '</h3><p>' + texte + '</p><span aria-hidden="true">→</span></a>'; }
+    function lien(route, nom, texte) { return '<li><a class="carte-lien" href="#' + route + '"><h3>' + nom + '</h3><p>' + texte + '</p><span aria-hidden="true">→</span></a></li>'; }
+    function lienLigne(route, nom, texte) { return '<a class="ligne-lien" href="#' + route + '"><b>' + nom + '</b><span>' + texte + '</span><i aria-hidden="true">→</i></a>'; }
 
     /* ---------- Lui ---------- */
     function noms(c) {
@@ -188,7 +189,7 @@
             '<h2 class="titre-section">En détail</h2><div class="texte lettrine">' + paras(a.paragraphes) + '</div>' +
             '<div class="pliants">' + pliant('Points forts', traits(a.forts, 'positif'), true) + pliant('Points faibles', traits(a.faibles, 'negatif')) +
             pliant('Marques & attributs', marques) + '</div>' +
-            '<a class="carte-lien large" href="#lui/sante"><h3>Historique de santé</h3><p>Blessures, maladies, soins et séquelles.</p><span aria-hidden="true">→</span></a>';
+            '<a class="ligne-lien grand" href="#lui/sante"><h3>Historique de santé</h3><p>Blessures, maladies, soins et séquelles.</p><span aria-hidden="true">→</span></a>';
     }
 
     function voix(c) {
@@ -365,7 +366,7 @@
     function relationsFiltres(c) {
         var clans = [];
         rels(c).forEach(function (r) { var k = r.clan || 'Sans clan'; if (clans.indexOf(k) < 0) clans.push(k); });
-        return puces([['liste', 'Liste'], ['toile', 'Toile']], REL.vue, 'vue') +
+        return puces([['liste', 'Liste'], ['ciel', 'Ciel']], REL.vue, 'vue') +
             (clans.length > 1 ? puces([['', 'Tous les clans']].concat(clans.map(function (k) { return [k, k]; })), REL.clan, 'clan') : '') +
             puces([['tous', 'Toutes'], ['positif', 'Appréciées'], ['neutre', 'Neutres'], ['negatif', 'Aversion'], ['decede', 'Décédées']], REL.aff, 'aff');
     }
@@ -377,39 +378,36 @@
         });
     }
 
-    // La toile : il est au centre, chaque chat est accroché à lui par un fil.
-    // Plus le lien est fort, plus le chat est proche du centre ; la couleur du fil dit la nature du lien.
-    function toile(c) {
+    // Le ciel : il est le grand nuage du centre, chaque chat est un nuage qui flotte autour de lui.
+    // Plus le lien est fort, plus le nuage est proche (et gros) ; la teinte dit la nature du lien.
+    function forme(k) {
+        return '<g class="corps" transform="scale(' + k.toFixed(2) + ')"><circle cx="-28" cy="4" r="16"/><circle cx="-10" cy="-8" r="21"/><circle cx="13" cy="-11" r="23"/>' +
+            '<circle cx="33" cy="1" r="17"/><rect x="-44" y="4" width="92" height="19" rx="9.500"/></g>';
+    }
+    function ciel(c) {
         var liste = relationsFiltrees(c).sort(function (a, b) { return String(a.clan || '').localeCompare(String(b.clan || '')); });
         if (!liste.length) return vide('Aucune relation ne correspond.');
-        var cx = 320, cy = 320, N = liste.length;
-        var s = '<svg class="toile-rel" viewBox="0 0 640 640" role="group" aria-label="Toile des relations : plus un chat est proche du centre, plus le lien est fort">';
-        [90, 155, 220, 285].forEach(function (r) { s += '<circle class="anneau" cx="' + cx + '" cy="' + cy + '" r="' + r + '"/>'; });
-        for (var k = 0; k < Math.max(N, 8); k++) {
-            var t = -Math.PI / 2 + k * 2 * Math.PI / Math.max(N, 8);
-            s += '<line class="rayon" x1="' + cx + '" y1="' + cy + '" x2="' + (cx + 300 * Math.cos(t)).toFixed(1) + '" y2="' + (cy + 300 * Math.sin(t)).toFixed(1) + '"/>';
-        }
+        var etroit = window.innerWidth < 640;
+        var W = etroit ? 460 : 820, H = etroit ? 640 : 540, cx = W / 2, cy = H / 2 - 4, RX = W / 2 - 80, RY = H / 2 - 64, N = liste.length;
+        var s = '<svg class="ciel-rel" viewBox="0 0 ' + W + ' ' + H + '" role="group" aria-label="Le ciel de ses relations : plus un nuage est proche du centre, plus le lien est fort">';
+        [.45, .72, 1].forEach(function (k) { s += '<ellipse class="anneau" cx="' + cx + '" cy="' + cy + '" rx="' + (RX * k).toFixed(0) + '" ry="' + (RY * k).toFixed(0) + '"/>'; });
+        s += '<g class="nuage-centre" transform="translate(' + cx + ' ' + cy + ')"><g class="flotte">' + forme(1.65) + '<use href="#oeil" x="-26" y="-14" width="48" height="32"/></g></g>';
         liste.forEach(function (r, i) {
             var a = r.dernier.affinite, cat = categorie(r);
-            var rayon = typeof a === 'number' ? 185 - a * 28 + (r.mort ? 30 : 0) : 235;
-            var ang = -Math.PI / 2 + i * 2 * Math.PI / N;
-            var x = cx + rayon * Math.cos(ang), y = cy + rayon * Math.sin(ang);
-            var epaisseur = typeof a === 'number' ? 1 + Math.abs(a) * .8 : 1;
-            var nom = r.nom.length > 16 ? r.nom.slice(0, 15) + '…' : r.nom;
-            s += '<g class="noeud ' + cat + '" data-rel="' + esc(r.nom) + '" tabindex="0" role="button" aria-label="' + esc(r.nom) + ' : voir l\'évolution" style="--i:' + i + '">' +
-                '<line class="fil-t" x1="' + cx + '" y1="' + cy + '" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '" stroke-width="' + epaisseur.toFixed(1) + '" pathLength="1"/>' +
-                '<g class="bulle" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')"><circle r="25" class="fond-n"/>' +
-                '<text class="ini" y="6" text-anchor="middle">' + esc(r.nom.charAt(0)) + '</text>' +
-                (r.photo ? '<clipPath id="cp' + i + '"><circle r="22"/></clipPath><image href="' + O.url(r.photo) + '" x="-22" y="-22" width="44" height="44" clip-path="url(#cp' + i + ')" preserveAspectRatio="xMidYMid slice"/>' : '') +
-                '<circle r="25" class="bord"/><text class="etiq" y="42" text-anchor="middle">' + esc(nom) + '</text></g></g>';
+            var force = typeof a === 'number' ? Math.abs(a) : 1;
+            var k = typeof a === 'number' ? 1 - (a + 3) / 6 * .5 : .85;
+            if (r.mort) k = Math.min(1, k + .12);
+            var ang = -Math.PI / 2 + i * 2 * Math.PI / N + (N === 1 ? .7 : 0);
+            var x = cx + RX * k * Math.cos(ang), y = cy + RY * k * Math.sin(ang);
+            var nom = r.nom.length > 13 ? r.nom.slice(0, 12) + '…' : r.nom;
+            s += '<g class="noeud ' + cat + '" data-rel="' + esc(r.nom) + '" tabindex="0" role="button" aria-label="' + esc(r.nom) + ' : voir l\'évolution" style="--i:' + i + '" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')">' +
+                '<g class="flotte">' + forme(1 + force * .1) + '<text class="etiq" y="6" text-anchor="middle">' + esc(nom) + '</text></g></g>';
         });
-        s += '<g class="centre"><circle cx="' + cx + '" cy="' + cy + '" r="34"/><use href="#oeil" x="' + (cx - 24) + '" y="' + (cy - 16) + '" width="48" height="32"/></g></svg>' +
-            '<p class="note-toile">Plus un chat est proche de lui, plus le lien est fort. <span class="l-pos">■</span> apprécié <span class="l-neu">■</span> neutre <span class="l-neg">■</span> aversion. Touche un chat pour voir l\'évolution.</p>';
-        return s;
+        return s + '</svg><p class="note-ciel">Plus un nuage est proche de lui, plus le lien est fort. <span class="l-pos">■</span> clair : apprécié · <span class="l-neu">■</span> bleuté : neutre · <span class="l-neg">■</span> orageux : aversion · <span class="l-mort">■</span> pâle : décédé(e). Touche un nuage pour voir l\'évolution.</p>';
     }
 
     function relationsListe(c) {
-        if (REL.vue === 'toile') return toile(c);
+        if (REL.vue === 'ciel') return ciel(c);
         var liste = relationsFiltrees(c);
         if (!liste.length) return vide('Aucune relation ne correspond.');
         return '<ul class="fils-rel">' + liste.map(function (r) {
@@ -453,7 +451,7 @@
         if (f.showModal) { if (!f.open) f.showModal(); } else f.setAttribute('open', '');
     }
 
-    /* ---------- Jouer : guide de rôle-play + fiche express ---------- */
+    /* ---------- Jouer : guide de rôle-play ---------- */
     var STATUTS_RP = { ouvert: 'Ouvert aux fils', selectif: 'Sélectif', ferme: 'Complet / fermé' };
     function jouer(c) {
         var j = c.jouer || {};
@@ -465,36 +463,7 @@
             '<div class="duo mt">' + bloc('aime', 'Ce qu\'il accepte', j.accepte) + bloc('aimepas', 'Ce qu\'il refuse', j.refuse) + '</div>' +
             '<h2 class="titre-section">Idées de rencontres</h2>' + traits(j.accroches, 'idees') +
             (j.notes ? '<aside class="encart mt">' + riche(j.notes) + '</aside>' : '') +
-            '<a class="carte-lien large" href="#histoire/fils"><h3>Ses fils de rôle-play</h3><p>Les aventures déjà jouées, avec les liens Discord.</p><span aria-hidden="true">→</span></a>';
-    }
-
-    function noms2(l) { return (l || []).map(function (x) { return x.nom; }).filter(Boolean).join(', '); }
-    // Fiche prête à coller sur Discord : fabriquée à partir du reste du site, rien à entretenir
-    function texteExpress(c) {
-        var f = c.fiche || {}, na = nomActuel(c), ne = nomNaissance(c), p = c.personnalite || {}, a = c.apparence || {}, j = c.jouer || {};
-        var l = [];
-        l.push('**' + na.nom + '**' + (ne ? ' (né ' + ne + ')' : '') + (f.clan ? ' — ' + f.clan : ''));
-        l.push((f.lignes || []).map(function (x) { return x.label + ' : ' + x.valeur; }).join(' · '));
-        if (f.pv || f.pa) l.push('PV ' + (f.pv || '?') + ' · PA ' + (f.pa || '?'));
-        l.push('');
-        if (f.accroche) l.push('*' + f.accroche + '*', '');
-        if ((p.motscles || []).length) l.push('**Caractère** : ' + noms2(p.motscles.map(function (m) { return { nom: m.texte }; })));
-        if ((p.qualites || []).length) l.push('**Qualités** : ' + noms2(p.qualites));
-        if ((p.defauts || []).length) l.push('**Défauts** : ' + noms2(p.defauts));
-        if ((p.aime || []).length) l.push('**Aime** : ' + noms2(p.aime));
-        if ((p.aimepas || []).length) l.push('**N\'aime pas** : ' + noms2(p.aimepas));
-        if ((a.apercu || []).length) l.push('**Physique** : ' + a.apercu.map(function (x) { return x.label + ' ' + x.valeur; }).join(' ; '));
-        if ((c.aptitudes || {}).role) l.push('**Rôle** : ' + c.aptitudes.role);
-        if (j.statutTexte) l.push('**RP** : ' + j.statutTexte);
-        l.push('', 'Fiche complète : ' + location.origin + location.pathname);
-        return l.join('\n');
-    }
-    function express(c) {
-        return titre('Fiche express', 'L\'essentiel en un coup d\'œil, prête à copier sur Discord') +
-            '<div class="express-actions"><button type="button" class="btn" data-copier="1">Copier la fiche</button>' +
-            '<button type="button" class="btn clair" data-imprimer="1">Imprimer / PDF</button><span class="express-etat" id="express-etat" role="status"></span></div>' +
-            '<pre class="express" id="express-texte">' + esc(texteExpress(c)) + '</pre>' +
-            '<p class="note">Cette fiche est générée à partir du reste du site : elle se met à jour toute seule.</p>';
+            '<a class="ligne-lien grand" href="#histoire/fils"><h3>Ses fils de rôle-play</h3><p>Les aventures déjà jouées, avec les liens Discord.</p><span aria-hidden="true">→</span></a>';
     }
 
     /* ---------- Galerie ---------- */
@@ -510,7 +479,7 @@
 
     var VUES = { 'accueil/accueil': accueil, 'lui/noms': noms, 'lui/caractere': caractere, 'lui/physique': physique, 'lui/voix': voix, 'lui/aptitudes': aptitudes, 'lui/sante': sante,
         'histoire/chroniques': chroniques, 'histoire/parcours': parcours, 'histoire/fils': fils, 'entourage/lignee': lignee, 'entourage/relations': relations,
-        'jouer/accroches': jouer, 'jouer/express': express, 'galerie/galerie': galerie };
+        'jouer/accroches': jouer, 'galerie/galerie': galerie };
 
     /* ---------- Routage ---------- */
     function route() {
@@ -522,12 +491,12 @@
     function hrefPage(p) { return '#' + p.id + (p.subs.length > 1 ? '/' + p.subs[0][0] : ''); }
 
     function menu(r) {
-        var liens = PAGES.map(function (p) {
-            return '<a href="' + hrefPage(p) + '"' + (p.id === r.page.id ? ' aria-current="page"' : '') + '>' +
-                '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + p.icone + '"/></svg><span>' + p.nom + '</span></a>';
+        function cur(p) { return p.id === r.page.id ? ' aria-current="page"' : ''; }
+        $('menu').innerHTML = PAGES.map(function (p) { return '<a href="' + hrefPage(p) + '"' + cur(p) + '>' + p.nom + '</a>'; }).join('');
+        $('volet-nav').innerHTML = PAGES.map(function (p, i) {
+            return '<section class="volet-bloc"><a class="volet-titre" href="' + hrefPage(p) + '"' + cur(p) + '><small>0' + (i + 1) + '</small><span>' + p.nom + '</span></a><p>' + esc(p.desc) + '</p>' +
+                (p.subs.length > 1 ? '<div class="volet-subs">' + p.subs.map(function (s) { return '<a href="#' + p.id + '/' + s[0] + '">' + s[1] + '</a>'; }).join('') + '</div>' : '') + '</section>';
         }).join('');
-        $('menu').innerHTML = liens;
-        $('bas').innerHTML = liens;
         var sous = $('sous');
         if (r.page.subs.length > 1) {
             sous.hidden = false;
@@ -536,6 +505,18 @@
             }).join('');
         } else sous.hidden = true;
     }
+
+    /* ---------- Grand menu plein écran ---------- */
+    function volet(ouvrir) {
+        $('volet').hidden = !ouvrir;
+        $('burger').setAttribute('aria-expanded', ouvrir ? 'true' : 'false');
+        $('burger').querySelector('span').textContent = ouvrir ? 'Fermer' : 'Menu';
+        document.body.classList.toggle('volet-ouvert', ouvrir);
+    }
+    $('burger').addEventListener('click', function () { volet($('volet').hidden); });
+    $('volet').addEventListener('click', function (e) { if (e.target.closest('a') || e.target === $('volet')) volet(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('volet').hidden) volet(false); });
+    window.addEventListener('hashchange', function () { if (!$('volet').hidden) volet(false); });
 
     function pagination(cle) {
         var i = ORDRE.indexOf(cle);
@@ -551,6 +532,7 @@
         $('marque-nom').textContent = na.nom;
         $('pied').textContent = (c.fiche || {}).pied || '';
         menu(r);
+        RUB = r.page.subs.length > 1 ? r.page.nom + ' — ' + nomPage(r.cle) : r.page.nom;
         var vue = $('vue');
         vue.className = 'vue v-' + r.page.id;
         vue.innerHTML = VUES[r.cle](c) + (r.cle === 'accueil/accueil' ? '' : pagination(r.cle));
@@ -577,28 +559,14 @@
         if ((b = e.target.closest('[data-clan]'))) { REL.clan = b.dataset.clan; majRelations(); return; }
         if ((b = e.target.closest('[data-aff]'))) { REL.aff = b.dataset.aff; majRelations(); return; }
         if ((b = e.target.closest('[data-rel]'))) { fenetreRelation(b.dataset.rel); return; }
-        if ((b = e.target.closest('[data-copier]'))) { copier(); return; }
-        if ((b = e.target.closest('[data-imprimer]'))) { window.print(); return; }
         if ((b = e.target.closest('[data-img]')) && DONNEES) ouvrirImage(Number(b.dataset.img), true);
         if ((b = e.target.closest('figure.figure img, figure.en-pied img'))) ouvrirUrl(b.src, b.alt);
     });
-    // Touche Entrée / Espace sur un chat de la toile
+    // Touche Entrée / Espace sur un nuage du ciel
     $('principal').addEventListener('keydown', function (e) {
         var n = e.target.closest && e.target.closest('g[data-rel]');
         if (n && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); fenetreRelation(n.dataset.rel); }
     });
-
-    function copier() {
-        var texte = $('express-texte').textContent, etat = $('express-etat');
-        function ok(m) { etat.textContent = m; setTimeout(function () { etat.textContent = ''; }, 2600); }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(texte).then(function () { ok('Copié ! Colle-la sur Discord.'); }, function () { selection(); ok('Sélectionné : fais Ctrl+C.'); });
-        } else { selection(); ok('Sélectionné : fais Ctrl+C.'); }
-        function selection() {
-            var r = document.createRange(); r.selectNodeContents($('express-texte'));
-            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-        }
-    }
 
     /* ---------- Visionneuse d'images (flèches ← → du clavier ou boutons) ---------- */
     var IMG = { i: 0 };
@@ -694,7 +662,7 @@
 
     /* ---------- Animations : apparition au défilement, progression de lecture ---------- */
     var CIBLES = '.entete, .exergue, .motscles li, .jauge, .nuancier li, .apercu > div, .pliant, .traits li, .frise li, .membre, .relation, .fil-rp, .chrono > li, ' +
-        '.parcours > li, .galerie li, .mini, .carte-lien, .texte > *, .groupe-lune, .chapitre > header, .recent, .etat, .hero-texte > *, .titre-section, .legende, .puces, .replique, .dispo-boite, .role-clan, .en-pied, .express';
+        '.parcours > li, .galerie li, .mini, .carte-lien, .texte > *, .groupe-lune, .chapitre > header, .recent, .etat, .hero-texte > *, .titre-section, .legende, .puces, .replique, .dispo-boite, .role-clan, .en-pied, .fiche > div, .ligne-lien, .debut li';
     var OBS = null;
     function reveler(racine) {
         if (!('IntersectionObserver' in window) || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
@@ -728,7 +696,7 @@
     remonter.addEventListener('click', function () { window.scrollTo({ top: 0 }); });
 
     /* ---------- Le regard : la pupille du logo suit le pointeur (souris uniquement) ---------- */
-    var oeil = document.querySelector('.oeil-logo'), attenteOeil = false, dernierPointeur = null;
+    var halo = $('ciel'), oeil = document.querySelector('.oeil-logo'), attenteOeil = false, dernierPointeur = null;
     function suivreRegard() {
         attenteOeil = false;
         var e = dernierPointeur;
@@ -738,6 +706,8 @@
         var n = Math.sqrt(dx * dx + dy * dy) || 1, k = Math.min(1, n) / n;
         oeil.style.setProperty('--px', (dx * k * 10).toFixed(2) + 'px');
         oeil.style.setProperty('--py', (dy * k * 3.5).toFixed(2) + 'px');
+        halo.style.setProperty('--mx', e.clientX + 'px');
+        halo.style.setProperty('--my', e.clientY + 'px');
     }
     // Le portrait suit doucement le pointeur, lui aussi
     $('principal').addEventListener('pointermove', function (e) {
