@@ -1,0 +1,15 @@
+{
+  "name": "nuage-blanc",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Fiche interactive de Nuage Blanc (Nubes), Clan du Vent",
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "images": "node scripts/images.js",
+    "schema": "node scripts/schema.js",
+    "deploy": "node scripts/deploy.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.0"
+  }
+}

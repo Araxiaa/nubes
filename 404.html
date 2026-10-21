@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuage Blanc</title>
+<meta name="robots" content="noindex">
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0a1220;color:#e8eef7;font:1rem/1.6 system-ui,sans-serif;text-align:center}a{color:#7cc8ec}</style>
+<script>
+/* Anciennes adresses du site (personnalite.html…) -> nouvelles pages */
+(function () {
+    var m = { 'personnalite.html': 'lui/caractere', 'physique.html': 'lui/physique', 'relations.html': 'entourage/relations', 'histoire.html': 'histoire/chroniques', 'portfolio.html': 'galerie' };
+    var p = location.pathname.split('/').pop();
+    var base = location.pathname.replace(/[^\/]*$/, '');
+    if (m[p]) location.replace(base + '#' + m[p]);
+})();
+</script></head>
+<body><main><h1>Cette page s'est perdue dans la brume…</h1><p><a href="./">Retourner chez Nuage Blanc</a></p></main></body></html>

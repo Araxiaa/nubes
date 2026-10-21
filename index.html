@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Nuage Blanc — Clan du Vent</title>
+    <meta name="description" content="Fiche de personnage de Nuage Blanc (Nubes), ancien solitaire devenu apprenti du Clan du Vent : caractère, physique, histoire, relations, fils de jeu de rôle et guide pour jouer avec lui.">
+    <meta name="theme-color" content="#0a1220">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nuage Blanc — Clan du Vent">
+    <meta property="og:description" content="Seul, il a survécu. Parmi les siens, il apprend à vivre.">
+    <meta property="og:image" content="https://araxiaa.github.io/nubes/assets/photos/avatar-m.webp">
+    <meta property="og:url" content="https://araxiaa.github.io/nubes/">
+    <meta property="og:locale" content="fr_FR">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="assets/fonts/cormorant.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+    <script>
+        /* Thème (nuit par défaut) appliqué avant l'affichage : aucun clignotement */
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('nubes-theme'); } catch (e) {}
+            document.documentElement.setAttribute('data-theme', t === 'brume' ? 'brume' : 'nuit');
+            if (t === 'brume') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#eef3f8');
+        })();
+    </script>
+    <link rel="stylesheet" href="css/site.css?v=mviar19h">
+</head>
+<body>
+    <a class="evitement" href="#principal">Aller au contenu</a>
+    <div class="progression" id="progression" aria-hidden="true"></div>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="oeil" viewBox="0 0 48 32">
+                <path class="amande" d="M2 16C9 6 17 3 24 3s15 3 22 13c-7 10-15 13-22 13S9 26 2 16z"/>
+                <g class="pupille"><ellipse cx="24" cy="16" rx="4.6" ry="10.5"/></g>
+                <path class="paupiere" d="M2 16C9 6 17 3 24 3s15 3 22 13C39 8 31 6 24 6S9 8 2 16z"/>
+            </symbol>
+            <symbol id="patte" viewBox="0 0 48 48">
+                <g fill="currentColor"><ellipse cx="12" cy="20" rx="4.6" ry="6" transform="rotate(-18 12 20)"/><ellipse cx="20.500" cy="11.500" rx="4.600" ry="6.200"/><ellipse cx="29.500" cy="11.500" rx="4.600" ry="6.200"/><ellipse cx="38" cy="20" rx="4.600" ry="6" transform="rotate(18 38 20)"/>
+                <path d="M25 24c-6 0-11 5.500-11 10.500 0 4 3 6 6 6 2 0 3.400-1 5-1s3 1 5 1c3 0 6-2 6-6C36 29.500 31 24 25 24z"/></g>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="ciel" aria-hidden="true"><i class="nuage n1"></i><i class="nuage n2"></i><i class="nuage n3"></i></div>
+    <canvas id="flocons" aria-hidden="true"></canvas>
+
+    <header class="haut">
+        <a class="marque" href="#accueil" aria-label="Nuage Blanc, accueil">
+            <svg class="oeil-logo" viewBox="0 0 48 32" aria-hidden="true"><use href="#oeil"/></svg>
+            <span id="marque-nom">Nuage Blanc</span>
+        </a>
+        <nav class="menu" id="menu" aria-label="Navigation principale"></nav>
+        <div class="outils">
+            <button type="button" class="outil" id="chercher" aria-label="Rechercher dans le site (touche /)" title="Rechercher ( / )">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.500" cy="10.500" r="6.500" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.500 15.500L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button type="button" class="outil theme" id="theme" aria-label="Basculer entre le thème nuit et le thème brume" title="Nuit / Brume">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="i-lune"><path d="M21 14.500A9 9 0 0 1 9.500 3a9 9 0 1 0 11.500 11.500z"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="i-soleil"><path d="M7 18a5 5 0 1 1 1.500-9.800A6 6 0 0 1 20 11a3.500 3.500 0 0 1-.500 7z"/></svg>
+            </button>
+        </div>
+    </header>
+    <nav class="sous" id="sous" aria-label="Sous-pages" hidden></nav>
+
+    <main class="principal" id="principal" tabindex="-1">
+        <div id="vue"><p class="chargement">Nuage Blanc ouvre un œil…</p></div>
+
+        <footer class="pied">
+            <p id="pied"></p>
+            <a class="secret" href="admin.html" aria-label="Espace de gestion" title="·">
+                <svg viewBox="0 0 48 32" aria-hidden="true">
+                    <path class="clos" d="M3 13c7 8 35 8 42 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <g class="ouvert"><use href="#oeil"/></g>
+                </svg>
+            </a>
+        </footer>
+    </main>
+
+    <nav class="bas" id="bas" aria-label="Navigation principale"></nav>
+    <button type="button" class="remonter" id="remonter" aria-label="Remonter en haut de la page">↑</button>
+
+    <dialog id="visionneuse" aria-label="Illustration">
+        <button type="button" class="fermer" aria-label="Fermer">×</button>
+        <button type="button" class="prec" aria-label="Image précédente">‹</button>
+        <button type="button" class="suiv" aria-label="Image suivante">›</button>
+        <img alt="">
+        <p></p>
+    </dialog>
+    <dialog id="fenetre" aria-label="Détail">
+        <button type="button" class="fermer" aria-label="Fermer">×</button>
+        <div id="fenetre-corps"></div>
+    </dialog>
+    <dialog id="recherche" aria-label="Rechercher">
+        <div class="recherche-boite">
+            <label class="sr" for="recherche-q">Rechercher dans le site</label>
+            <input type="search" id="recherche-q" placeholder="Rechercher une page, un chat, un fil…" autocomplete="off">
+            <ul id="recherche-liste" role="listbox"></ul>
+            <p class="recherche-aide"><kbd>↑</kbd> <kbd>↓</kbd> pour choisir · <kbd>Entrée</kbd> pour ouvrir · <kbd>Échap</kbd> pour fermer</p>
+        </div>
+    </dialog>
+
+    <script src="js/outils.js?v=mviar19h"></script>
+    <script src="js/data/contenu.js?v=mviar19h"></script>
+    <script src="js/config.js?v=mviar19h"></script>
+    <script src="js/donnees.js?v=mviar19h"></script>
+    <script src="js/site.js?v=mviar19h"></script>
+    <script src="js/ambiance.js?v=mviar19h" defer></script>
+</body>
+</html>

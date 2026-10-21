@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard — Nuage Blanc</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0a1220">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/site.css?v=mviar19h">
+    <link rel="stylesheet" href="css/admin.css?v=mviar19h">
+</head>
+<body class="admin">
+
+    <header class="admin-barre">
+        <a class="retour" href="index.html">← Retour au site</a>
+        <span class="admin-titre">Dashboard · Nuage Blanc</span>
+        <span class="admin-qui" id="qui"></span>
+        <button class="bouton-clair bouton-petit" id="deconnexion" type="button" hidden>Se déconnecter</button>
+    </header>
+
+    <main class="admin-contenu">
+        <section class="admin-ecran" id="ecran"><p>Chargement…</p></section>
+
+        <div class="admin-app" id="app" hidden>
+            <nav class="admin-onglets" id="onglets" aria-label="Rubriques"></nav>
+            <section class="admin-editeur">
+                <div class="admin-entete">
+                    <div>
+                        <h1 id="rubrique-titre"></h1>
+                        <p class="admin-aide" id="rubrique-aide"></p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="bouton" id="enregistrer" type="button">Enregistrer</button>
+                    </div>
+                </div>
+                <div id="formulaire"></div>
+            </section>
+        </div>
+    </main>
+
+    <div class="admin-toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+    <script src="js/config.js?v=mviar19h"></script>
+    <script src="js/outils.js?v=mviar19h"></script>
+    <script src="js/data/contenu.js?v=mviar19h"></script>
+    <script src="js/admin.js?v=mviar19h"></script>
+</body>
+</html>
